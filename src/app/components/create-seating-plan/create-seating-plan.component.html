@@ -1,0 +1,13 @@
+<div class="seating-plan-container">
+    <button type="button" class="btn" (click)="addSection()">Add Section</button>
+
+    <div class="sections">
+        <div *ngFor="let section of sections" class="section">
+            <div *ngFor="let row of section.rows" class="row">
+                <div *ngFor="let seat of row.seats" class="seat">
+                    A1
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

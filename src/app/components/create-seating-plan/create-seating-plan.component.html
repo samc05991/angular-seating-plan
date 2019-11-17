@@ -1,11 +1,71 @@
 <div class="seating-plan-container">
-    <button type="button" class="btn" (click)="addSection()">Add Section</button>
+    <div class="controls">
+        <h2> Controls </h2>
+
+        <div class="control-dropdown">
+            <div class="control-dropdown-title" (click)="showGridControls = !showGridControls">
+                <h3> Grid Management </h3>
+            </div>
+            
+            <div class="control-dropdown-content" *ngIf="showGridControls">
+                <p>Each section fits into a grid slot, use the inputs below to decide how many sections across and down you will need.</p>
+                
+                <span class="label">Width</span><br>
+                <input type="number" class="number-input" [(ngModel)]="gridWidth"><br><br>
+    
+                <span class="label">Height</span><br>
+                <input type="number" class="number-input" [(ngModel)]="gridHeight"><br><br>
+        
+                <button type="button" class="btn" (click)="updateGrid()">Update Grid</button>
+            </div>
+        </div>
+
+        <div class="control-dropdown">
+            <div class="control-dropdown-title" (click)="showSectionControls = !showSectionControls">
+                <h3> Add Section </h3>
+            </div>
+            
+            <div class="control-dropdown-content" *ngIf="showSectionControls">
+                <p>Get started quickly by inputting the typical number of rows and seats per row in each section</p>
+
+                <span class="label">Rows</span><br>
+                <input type="number" class="number-input" [(ngModel)]="numberOfRowsToAdd"><br><br>
+                <span class="label">Seats</span><br>
+                <input type="number" class="number-input" [(ngModel)]="numberOfSeatsToAdd"><br><br>
+        
+                <button type="button" class="btn" (click)="addSection()">Add Section</button>
+            </div>
+        </div>
+
+        <div class="control-dropdown">
+            <div class="control-dropdown-title" (click)="showSectionCustomiseControls = !showSectionCustomiseControls">
+                <h3> Edit a Section </h3>
+            </div>
+            
+            <div class="control-dropdown-content" *ngIf="showSectionCustomiseControls">
+                <span class="label">Width</span><br>
+                <input type="number" class="number-input" [(ngModel)]="selectedSectionWidth"><br><br>
+                <input type="range" id="start" [(ngModel)]="selectedSectionWidth" (ngModelChange)="updateSectionProperties()" name="volume" min="0" max="500">
+
+                <span class="label">Height</span><br>
+                <input type="number" class="number-input" [(ngModel)]="selectedSectionHeight" (ngModelChange)="updateSectionProperties()"><br><br>
+                <input type="range" id="start" [(ngModel)]="selectedSectionHeight" (ngModelChange)="updateSectionProperties()" name="volume" min="0" max="500">
+                
+                <span class="label">Rotation</span><br>
+                <input type="number" class="number-input" [(ngModel)]="selectedSectionRotation" (ngModelChange)="updateSectionProperties()"><br><br>
+                <input type="range" id="start" [(ngModel)]="selectedSectionRotation" (ngModelChange)="updateSectionProperties()" name="volume" min="0" max="500">
+                
+                <button type="button" class="btn" (click)="updateSectionProperties()">Update Section</button>
+            </div>
+        </div>
+        <!-- <button type="button" class="btn" (click)="rotateSection()">Rotate Section</button> -->
+    </div>
 
     <div class="sections">
-        <div *ngFor="let section of sections" class="section">
-            <div *ngFor="let row of section.rows" class="row">
-                <div *ngFor="let seat of row.seats" class="seat">
-                    A1
+        <div *ngFor="let section of seatingPlan.sections; index as i" class="section" (click)="selectSection($event, i)" id="section{{i}}">
+            <!-- <h5 (click)="$event.stopPropagation()">Available: {{section.available}}</h5> -->
+            <div *ngFor="let row of section.rows" class="row" (click)="$event.stopPropagation()">
+                <div *ngFor="let seat of row.seats" class="seat" [ngClass]="{'seat-inactive': seat.inactive}" (click)="$event.stopPropagation()">
                 </div>
             </div>
         </div>
